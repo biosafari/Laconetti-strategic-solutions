@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/biosafari/Laconetti-strategic-solutions/main/docs/laconetti_banner_embed.png" width="900"/>
+</p>
+
 # Laconetti Strategic Solutions Ltd
 
 **Sustainable Strategy. Global Impact.**
