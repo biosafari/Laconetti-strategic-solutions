@@ -33,6 +33,10 @@ To bridge international development and investment strategies with credible, con
 - 📍 Nigeria HQ: Warri, Delta State
 - 🌍 UK Office: Virtual, London
 
----
+---## 📎 Download Our Materials
+
+- [📄 Company One-Pager Summary](https://github.com/biosafari/Laconetti-strategic-solutions/raw/main/docs/laconetti_company_summary.docx)
+- [📊 Pitch Deck – OML40 Engagement](https://github.com/biosafari/Laconetti-strategic-solutions/raw/main/docs/laconetti_pitch_deck_OML40.pptx)
+
 
 _“Bridging the gap between access and opportunity.”_
