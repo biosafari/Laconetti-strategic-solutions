@@ -17,7 +17,7 @@ Laconetti is a dual-jurisdiction consultancy headquartered in Nigeria with opera
 
 ## 🧩 Our Mission
 
-To bridge international development and investment strategies with credible, conflict-resilient execution in Nigeria and across Africa—driven by trust, compliance, and community engagement.
+To bridge international development and investment strategies with credible, conflict-resilient execution in Nigeria and across Africa, Europe and Asia —driven by trust, compliance, and community engagement.
 
 ## 🌍 Who We Serve
 
