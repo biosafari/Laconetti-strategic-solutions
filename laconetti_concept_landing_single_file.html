@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
     <style>
       :root{
-        --brand-navy:#0a2b4a;
+        --brand-navy:#0a2b4a; /* deep navy like the concept */
         --brand-navy-2:#082338;
         --brand-gold:#DAA520;
         --brand-gold-2:#b88a1b;
@@ -31,7 +31,11 @@
       }
       *{box-sizing:border-box}
       html,body{height:100%}
-      body{margin:0; background:var(--page); color:var(--text); font-family:Lato, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height:1.55;}
+      body{
+        margin:0; background:var(--page); color:var(--text);
+        font-family:Lato, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        line-height:1.55;
+      }
       h1,h2,h3{font-family:Montserrat, Lato, sans-serif; margin:0 0 .5rem}
       h1{font-size:clamp(2rem, 4vw, 3rem); font-weight:700}
       h2{font-size:clamp(1.25rem, 2.4vw, 1.75rem); font-weight:700}
@@ -46,6 +50,8 @@
       .btn.gold{background:var(--brand-gold); color:#101010}
       .btn.ghost{border-color:var(--brand-gold); color:var(--brand-gold)}
       #themeToggle{background:none; border:1px solid var(--muted); border-radius:999px; padding:.4rem .65rem; cursor:pointer}
+
+      /* HERO */
       .hero{position:relative; isolation:isolate; overflow:hidden; border-radius:20px; background:linear-gradient(90deg,var(--brand-navy) 0%, var(--brand-navy-2) 50%, transparent 50%), url('assets/hero.jpg') right/cover no-repeat;}
       .hero::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(10,43,74,.85) 0%, rgba(10,43,74,.6) 40%, rgba(10,43,74,0) 60%)}
       .hero-inner{position:relative; z-index:1; display:grid; grid-template-columns:1.15fr .85fr; min-height:58vh}
@@ -56,34 +62,52 @@
       .hero-cta{display:flex; gap:.75rem; flex-wrap:wrap}
       .hero-badges{display:flex; gap:1rem; margin-top:1rem; filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
       .badge{background:rgba(218,165,32,.95); color:#111; border-radius:999px; padding:.35rem .65rem; font-weight:800; font-size:.8rem}
+
+      /* MOSAIC like the top-left panel */
       .mosaic{margin:2.5rem 0; display:grid; grid-template-columns:2fr 1fr; gap:14px}
       .mosaic .a{grid-row:span 2}
       .tile{position:relative; border-radius:16px; overflow:hidden; background:var(--surface); box-shadow:var(--shadow)}
       .tile > img{width:100%; height:100%; object-fit:cover; display:block; filter:saturate(.9)}
       .tile::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.0) 20%, rgba(0,0,0,.35) 100%)}
       .tile .label{position:absolute; left:12px; bottom:10px; color:#fff; font-weight:700; font-size:.85rem; letter-spacing:.02em}
+
+      /* CREDENTIAL STRIP with gold seals */
       .credentials{background:var(--brand-navy); color:#fff; border-radius:16px; padding:1.25rem}
       .cred-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
       .cred{background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:1rem 1.25rem; position:relative; overflow:hidden}
       .seal{position:absolute; right:14px; bottom:14px; width:74px; height:74px; border-radius:50%; background:radial-gradient(circle at 30% 30%, #fff6d4 0%, #f3d079 32%, var(--brand-gold) 55%, var(--brand-gold-2) 75%); box-shadow:0 6px 16px rgba(0,0,0,.35); display:grid; place-items:center; color:#111; font-weight:900; letter-spacing:.06em; font-size:.7rem}
       .cred h3{color:#fff}
       .cred p{color:#d8e2ea; margin:.35rem 0 0}
+
+      /* WAVE SECTION using layered curves (like lower middle card) */
       .wave-wrap{margin:2.75rem 0; border-radius:16px; overflow:hidden; box-shadow:var(--shadow)}
-      .wave{--bg:linear-gradient(180deg, #ffffff 0%, #f7fafc 100%); background:var(--bg); position:relative; padding:2rem 0 0}
+      .wave{
+        --bg:linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+        background:var(--bg);
+        position:relative; padding:2rem 0 0
+      }
       .wave svg{display:block; width:100%; height:auto}
       .wave-content{background:var(--brand-navy); color:#fff; padding:2rem 0}
       .wave-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
       .stat{background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:1.25rem}
       .stat .num{font-size:1.75rem; font-weight:800; color:var(--brand-gold)}
       .stat .lbl{opacity:.9}
+
+      /* CARD GRID with gold accent bar */
       .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:2.5rem 0}
       .card{background:var(--surface); border:1px solid #e6eef6; border-radius:16px; box-shadow:var(--shadow); overflow:hidden}
       .card .bar{height:6px; background:linear-gradient(90deg, var(--brand-gold), var(--teal-1), var(--teal-3));}
       .card-inner{padding:1rem 1.25rem}
+
+      /* CTA */
       .cta{display:grid; grid-template-columns:1.4fr .6fr; gap:18px; align-items:center; background:var(--brand-navy); color:#fff; border-radius:16px; padding:1.25rem 1.25rem 1.5rem}
       .cta h2{color:#fff}
       .cta .bridge{justify-self:end; inline-size:min(380px, 100%)}
+
+      /* FOOTER */
       footer{margin:2.5rem 0 2rem; color:var(--muted); display:flex; justify-content:space-between; align-items:center}
+
+      /* RESPONSIVE */
       @media (max-width: 960px){
         .hero-inner{grid-template-columns:1fr}
         .mosaic{grid-template-columns:1fr;}
@@ -111,6 +135,7 @@
       </div>
     </header>
 
+    <!-- HERO with image + navy overlay, brand line + badges -->
     <section class="container hero" aria-label="Intro">
       <div class="hero-inner">
         <div class="hero-copy">
@@ -131,12 +156,14 @@
       </div>
     </section>
 
+    <!-- MOSAIC image layout (drop your images in /assets/) -->
     <section class="container mosaic" aria-label="Sectors">
       <figure class="tile a"><img src="assets/sector-energy.jpg" alt="Offshore energy infrastructure" /><figcaption class="label">Energy</figcaption></figure>
       <figure class="tile"><img src="assets/sector-agri.jpg" alt="Agricultural value chain" /><figcaption class="label">Agriculture</figcaption></figure>
       <figure class="tile"><img src="assets/sector-mining.jpg" alt="Mining corridor" /><figcaption class="label">Mining</figcaption></figure>
     </section>
 
+    <!-- CREDENTIAL STRIP with gold seals -->
     <section class="container credentials" id="services">
       <div class="cred-grid">
         <div class="cred">
@@ -157,14 +184,18 @@
       </div>
     </section>
 
+    <!-- WAVE SECTION with layered teal + gold curve -->
     <section class="container wave-wrap" id="impact">
       <div class="wave" aria-hidden="true">
+        <!-- Top decorative wave (teal) -->
         <svg viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0,80 C240,140 480,0 720,60 C960,120 1200,40 1440,110 L1440,0 L0,0 Z" fill="var(--teal-1)"></path>
         </svg>
+        <!-- Mid decorative wave (teal/dark) -->
         <svg viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0,120 C320,40 620,160 960,80 C1180,30 1320,60 1440,50 L1440,0 L0,0 Z" fill="var(--teal-2)"></path>
         </svg>
+        <!-- Gold accent ribbon -->
         <svg viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0,60 C320,110 720,10 1140,80 C1270,100 1380,110 1440,115 L1440,120 L0,120 Z" fill="var(--brand-gold)"></path>
         </svg>
@@ -182,6 +213,7 @@
       </div>
     </section>
 
+    <!-- CARD GRID: case studies -->
     <section class="container cards" aria-label="Case Studies">
       <article class="card">
         <div class="bar" aria-hidden="true"></div>
@@ -206,6 +238,7 @@
       </article>
     </section>
 
+    <!-- CTA with bridge motif -->
     <section class="container cta" id="contact">
       <div>
         <h2>Let’s turn complexity into opportunity</h2>
@@ -229,6 +262,7 @@
     </footer>
 
     <script>
+      // Theme handling aligned with previous guidance
       (() => {
         const KEY = 'laconetti:theme';
         const sys = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
