@@ -332,4 +332,40 @@ footer .citations a {
   section {
     padding: 2rem 0;
   }
+}/* Base type */
+html { font-size: 16px; }
+body { line-height: 1.6; word-break: break-word; }
+
+/* Fluid headings */
+h1 { font-size: clamp(1.75rem, 4.5vw, 3rem); line-height: 1.2; }
+h2 { font-size: clamp(1.25rem, 3.5vw, 2rem); line-height: 1.3; }
+
+/* Images and blocks */
+img, video { max-width: 100%; height: auto; display: block; }
+section, .container, .hero { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+
+/* Navigation */
+header { padding: .75rem 1rem; }
+nav ul { display: flex; flex-wrap: wrap; gap: .75rem; margin: 0; padding: 0; list-style: none; }
+nav a { text-decoration: none; }
+
+/* Hero fixes */
+.hero { padding: 2rem 1rem; }
+.hero > * { max-width: 38rem; }          /* keep text line length readable */
+.hero img, .hero .art { width: 100%; }   /* no overflow */
+.hero::after { content: none; }          /* disable gradient overlay by default */
+
+/* Buttons/pills */
+.button, .pill { padding: .6rem .9rem; font-size: .95rem; }
+
+/* Mobile-first layout */
+@media (max-width: 768px) {
+  body { padding: 0; }
+  header, main, footer { padding-left: 1rem; padding-right: 1rem; }
+  .grid, .row { display: block; }               /* stack columns */
+  .card, .tile { width: 100%; }
+  .hero { padding: 1.25rem 1rem; }
+  .hero::after { content: none; }               /* kill the split gradient on mobile */
+  nav ul { gap: .5rem; }
+  nav a { font-size: 1rem; }
 }
