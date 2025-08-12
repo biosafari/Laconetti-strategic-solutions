@@ -371,3 +371,27 @@ nav a { text-decoration: none; }
 }
 /* if you use a gradient overlay */
 .hero-overlay, .hero::after { content: none !important; }
+/* Mobile hero fix /
+@media (max-width: 768px){
+/ remove the split gradient */
+.hero::before,
+.hero::after,
+.hero .overlay{ display:none !important; }
+
+/* readable text and width */
+.hero{ padding:1.25rem 1rem; background:#0e2a45; }
+.hero h1{ font-size:2rem; line-height:1.2; letter-spacing:-0.02em; }
+.hero p{ font-size:1rem; max-width:36ch; }
+
+/* ensure text sits above any leftover layers */
+.hero .content{ position:relative; z-index:2; }
+
+/* wrap long words */
+.hero, .hero *{ overflow-wrap:anywhere; word-break:normal; }
+
+/* buttons */
+.button, .pill{ padding:.6rem .9rem; font-size:1rem; }
+}
+
+/* keep strong contrast */
+.hero h1, .hero p, .hero a{ color:#fff !important; }
