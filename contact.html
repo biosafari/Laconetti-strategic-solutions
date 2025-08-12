@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact – Laconetti</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Use Montserrat and Lato fonts consistent with the brand -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <div class="container nav-bar">
+        <div class="brand">Laconetti</div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="impact.html">Impact Stories</a></li>
+            <li><a href="team.html">Team</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+      </div>
+    </header>
+
+    <section class="container">
+      <h1 class="section-title">Get in Touch</h1>
+      <p>We’d love to hear from you. Whether you’re interested in our services, exploring partnership opportunities or just saying hello, feel free to reach out using the form below or contact one of our offices directly.</p>
+      <!-- Contact details for UK & Nigeria offices -->
+      <div class="card-grid" style="margin-bottom:2rem;">
+        <div class="card">
+          <h3>United Kingdom</h3>
+          <p><strong>London Office</strong><br />
+            12 International House, Canary Wharf, London, E14&nbsp;5AB<br />
+            Phone: +44&nbsp;20&nbsp;1234&nbsp;5678<br />
+            Email: <a href="mailto:uk@laconetti.com">uk@laconetti.com</a></p>
+        </div>
+        <div class="card">
+          <h3>Nigeria</h3>
+          <p><strong>Lagos Office</strong><br />
+            3 Marina Road, Victoria Island, Lagos, Nigeria<br />
+            Phone: +234&nbsp;1&nbsp;700&nbsp;1234<br />
+            Email: <a href="mailto:ng@laconetti.com">ng@laconetti.com</a></p>
+        </div>
+      </div>
+      <!-- Contact form -->
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your message! We will get back to you soon.'); this.reset();">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <input type="text" name="subject" placeholder="Subject" />
+        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+
+    <footer>
+      <p>© 2025 Laconetti. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

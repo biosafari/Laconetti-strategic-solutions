@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Market Analysis - Laconetti</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Import Montserrat and Lato to align with brand typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <div class="container nav-bar">
+        <div class="brand">Laconetti</div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="impact.html">Impact Stories</a></li>
+            <li><a href="team.html">Team</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+      </div>
+    </header>
+
+    <section class="container">
+      <h1 class="section-title">Market Analysis</h1>
+      <p>We operate in the digital solutions sector, delivering innovative products and services that help businesses thrive in an increasingly connected world. Our market analysis provides insight into industry trends, customer needs and competitor dynamics. Understanding these factors helps us identify opportunities, mitigate risks and position ourselves for sustainable growth.</p>
+      <h2>Industry Outlook</h2>
+      <p>The digital economy continues to expand rapidly as organisations invest in technology to enhance efficiency, reach new customers and differentiate themselves. Key trends include the acceleration of cloud adoption, the growing importance of data analytics and artificial intelligence, and increasing demand for user‑centric design. By aligning our offerings with these trends, we aim to capture a significant share of this dynamic market.</p>
+      <h2>Target Segments</h2>
+      <p>Our primary audience includes small and midsize enterprises seeking to modernise their operations. We also cater to non‑profits and educational institutions that require cost‑effective, scalable digital tools. Our solutions are designed to be flexible and accessible, allowing clients across industries—from healthcare to retail—to leverage our expertise.</p>
+      <div class="chart-container">
+        <canvas id="marketChart" width="600" height="400" aria-label="Market share by segment" role="img"></canvas>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 Laconetti. All rights reserved.</p>
+      <div class="citations">
+        <span>Sources:</span>
+        <a href="【355792205539159†L344-L349】" target="_blank" rel="noopener">[1]</a>
+        <a href="【503273556536306†L359-L365】" target="_blank" rel="noopener">[2]</a>
+      </div>
+    </footer>
+
+    <!-- Chart.js library from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
