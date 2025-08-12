@@ -1,141 +1,111 @@
-/*
- * Main JavaScript for the Laconetti business plan site.
- *
- * Handles theme toggling (light/dark) and initialises the
- * market analysis chart if present on the page. The script
- * stores the user's theme preference in localStorage so it
- * persists across sessions.
- */
+/* Laconetti core UI: theme + chart (Chart.js v4) */
+(() => {
+  const THEME_KEY = "laconetti:theme";
 
-// Immediately invoked function to avoid polluting the global scope
-(function() {
-  /**
-   * Apply the saved theme or default to light on load. If a theme
-   * preference exists in localStorage, use it; otherwise, detect
-   * the user's system preference and set accordingly. Update the
-   * theme toggle button label to reflect the current mode.
-   */
-  function applySavedTheme() {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const body = document.body;
-    const toggleButton = document.getElementById('themeToggle');
-    let theme;
-    if (savedTheme) {
-      theme = savedTheme;
-    } else {
-      theme = prefersDark ? 'dark' : 'light';
-    }
-    if (theme === 'dark') {
-      body.classList.add('dark-mode');
-      if (toggleButton) toggleButton.textContent = '☀️';
-    } else {
-      body.classList.remove('dark-mode');
-      if (toggleButton) toggleButton.textContent = '🌙';
-    }
-  }
+  // ---- Theme ---------------------------------------------------------------
+  const getSystemTheme = () =>
+    window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark" : "light";
 
-  /**
-   * Toggle between light and dark themes when the button is clicked.
-   * Updates the class on the body and stores the choice in
-   * localStorage. Also flips the icon displayed on the button.
-   */
-  function toggleTheme() {
-    const body = document.body;
-    const isDark = body.classList.toggle('dark-mode');
-    const toggleButton = document.getElementById('themeToggle');
-    if (isDark) {
-      localStorage.setItem('theme', 'dark');
-      if (toggleButton) toggleButton.textContent = '☀️';
-    } else {
-      localStorage.setItem('theme', 'light');
-      if (toggleButton) toggleButton.textContent = '🌙';
-    }
-  }
+  const readTheme = () => {
+    try { return localStorage.getItem(THEME_KEY) || ""; } catch { return ""; }
+  };
 
-  /**
-   * Initialise the market analysis chart using Chart.js. This
-   * function checks for the existence of the canvas element with
-   * id 'marketChart' before attempting to construct the chart. If
-   * the element is found, sample data representing market
-   * segmentation is displayed. Colours are derived from CSS
-   * variables to stay consistent with the site theme.
-   */
-  function initMarketChart() {
-    const ctx = document.getElementById('marketChart');
-    if (!ctx || typeof Chart === 'undefined') return;
-    // Retrieve CSS variables for colours
-    const styles = getComputedStyle(document.body);
-    const accent = styles.getPropertyValue('--accent').trim();
-    const accentSecondary = styles.getPropertyValue('--accent-secondary').trim();
-    const textPrimary = styles.getPropertyValue('--text-primary').trim();
-    // Sample data: market share across four segments
-    const data = {
-      labels: ['Segment A', 'Segment B', 'Segment C', 'Segment D'],
-      datasets: [
-        {
-          label: 'Market Share (%)',
+  const writeTheme = (v) => {
+    try { localStorage.setItem(THEME_KEY, v); } catch {}
+  };
+
+  const applyTheme = (t) => {
+    const theme = t || readTheme() || getSystemTheme();
+    document.documentElement.setAttribute("data-theme", theme);
+    const btn = document.getElementById("themeToggle");
+    if (btn) {
+      btn.setAttribute("aria-pressed", String(theme === "dark"));
+      btn.title = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+      btn.textContent = theme === "dark" ? "☀️" : "🌙";
+    }
+    return theme;
+  };
+
+  // Apply ASAP to avoid flash
+  applyTheme();
+
+  const onToggleTheme = () => {
+    const next = (document.documentElement.getAttribute("data-theme") === "dark") ? "light" : "dark";
+    applyTheme(next);
+    writeTheme(next);
+  };
+
+  // ---- Chart ---------------------------------------------------------------
+  const initMarketChart = () => {
+    const el = document.getElementById("marketChart");
+    if (!el || typeof Chart === "undefined") return;
+
+    const css = getComputedStyle(document.documentElement);
+    const cText   = css.getPropertyValue("--text-primary").trim()   || "#eaeaea";
+    const cAxis   = css.getPropertyValue("--muted").trim()          || "#8aa0b4";
+    const cBar    = css.getPropertyValue("--accent").trim()         || "#DAA520";
+    const cBarAlt = css.getPropertyValue("--accent-secondary").trim() || "#003366";
+    const ctx = el.getContext("2d");
+
+    // gradient aligned with brand
+    const grad = ctx.createLinearGradient(0, 0, 0, el.height);
+    grad.addColorStop(0, cBar);
+    grad.addColorStop(1, cBarAlt);
+
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Energy", "Agriculture", "Mining", "Procurement"],
+        datasets: [{
+          label: "Market Share (%)",
           data: [35, 25, 20, 20],
-          backgroundColor: [accent, accentSecondary, '#f7c948', '#6c5ce7'],
-          borderColor: [accent, accentSecondary, '#e0b347', '#574b90'],
-          borderWidth: 1
-        }
-      ]
-    };
-    const options = {
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            color: textPrimary
-          },
-          title: {
-            display: true,
-            text: 'Percentage',
-            color: textPrimary
-          }
-        },
-        x: {
-          ticks: {
-            color: textPrimary
-          },
-          title: {
-            display: true,
-            text: 'Market Segments',
-            color: textPrimary
-          }
-        }
+          backgroundColor: grad,
+          borderWidth: 0,
+          borderRadius: 8,
+          maxBarThickness: 48
+        }]
       },
-      plugins: {
-        legend: {
-          labels: {
-            color: textPrimary
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 600, easing: "easeOutQuart" },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: cBarAlt,
+            titleColor: cText,
+            bodyColor: cText,
+            padding: 12,
+            displayColors: false
+          },
+          title: {
+            display: true,
+            text: "Market Share by Segment",
+            color: cText,
+            font: { weight: "600", size: 16 }
           }
         },
-        title: {
-          display: true,
-          text: 'Market Share by Segment',
-          color: textPrimary,
-          font: {
-            size: 16
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { color: cText, font: { weight: "600" } }
+          },
+          y: {
+            beginAtZero: true,
+            grid: { color: cAxis },
+            ticks: { color: cText, stepSize: 10 },
+            title: { display: true, text: "Percentage", color: cText }
           }
         }
       }
-    };
-    new Chart(ctx, {
-      type: 'bar',
-      data: data,
-      options: options
     });
-  }
+  };
 
-  // Setup event listeners when the DOM is ready
-  document.addEventListener('DOMContentLoaded', () => {
-    applySavedTheme();
-    const toggleButton = document.getElementById('themeToggle');
-    if (toggleButton) {
-      toggleButton.addEventListener('click', toggleTheme);
-    }
+  // ---- Boot ---------------------------------------------------------------
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("themeToggle");
+    if (btn) btn.addEventListener("click", onToggleTheme);
     initMarketChart();
   });
 })();
