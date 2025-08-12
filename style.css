@@ -369,3 +369,5 @@ nav a { text-decoration: none; }
   nav ul { gap: .5rem; }
   nav a { font-size: 1rem; }
 }
+/* if you use a gradient overlay */
+.hero-overlay, .hero::after { content: none !important; }
