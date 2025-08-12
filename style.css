@@ -417,3 +417,71 @@ nav a { text-decoration: none; }
     color: #ffffff !important;
   }
 }
+/* Global */
+img, video {max-width:100%; height:auto; display:block;}
+h1,h2,h3 {overflow-wrap:anywhere; word-break:normal;}
+html { -webkit-text-size-adjust:100%; }
+
+/* HERO mobile (overlay off + readable type) */
+@media (max-width:768px){
+  .hero::after{display:none!important; background:none!important; content:none!important;}
+  .hero{background:var(--brand-navy)!important; padding:1.5rem 1rem;}
+  .hero .kicker, .hero h1, .hero p{color:#fff!important;}
+  .hero h1{font-size:1.8rem; line-height:1.25; margin:.5rem 0;}
+  .hero p{font-size:1rem; line-height:1.5; max-width:36ch;}
+  .hero-cta{gap:.5rem;}
+}
+
+/* Layout + nav */
+@media (max-width:768px){
+  .container{width:94%;}
+  .nav{flex-wrap:wrap; gap:.5rem; padding:.75rem 0;}
+  nav ul{flex-wrap:wrap; gap:.75rem;}
+  .btn{padding:.55rem .85rem; font-size:.95rem;}
+}
+
+/* Mosaic tiles */
+@media (max-width:768px){
+  .mosaic{grid-template-columns:1fr; gap:10px; margin:1.5rem 0;}
+  .tile::after{background:linear-gradient(180deg, rgba(0,0,0,.0) 40%, rgba(0,0,0,.35) 100%);}
+}
+
+/* Credentials section */
+@media (max-width:768px){
+  .credentials{padding:1rem;}
+  .cred-grid{grid-template-columns:1fr; gap:12px;}
+  .cred{padding:.9rem 1rem;}
+  .cred p{font-size:.95rem;}
+}
+
+/* Wave stats */
+@media (max-width:768px){
+  .wave-wrap{margin:1.75rem 0;}
+  .wave-content{padding:1.25rem 0;}
+  .wave-grid{grid-template-columns:1fr; gap:12px;}
+  .stat{padding:1rem;}
+  .stat .num{font-size:1.5rem;}
+}
+
+/* Cards / case studies */
+@media (max-width:768px){
+  .cards{grid-template-columns:1fr; gap:12px; margin:1.75rem 0;}
+  .card-inner{padding:.9rem 1rem;}
+}
+
+/* CTA */
+@media (max-width:768px){
+  .cta{grid-template-columns:1fr; gap:12px; padding:1rem;}
+  .cta .bridge{inline-size:100%;}
+}
+
+/* Footer */
+@media (max-width:768px){
+  footer{flex-direction:column; align-items:flex-start; gap:.5rem; margin:1.75rem 0 1.5rem;}
+}
+
+/* Small phones */
+@media (max-width:400px){
+  .hero h1{font-size:1.6rem;}
+  .btn{width:100%; justify-content:center;}
+}
