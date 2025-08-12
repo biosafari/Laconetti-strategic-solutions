@@ -395,3 +395,25 @@ nav a { text-decoration: none; }
 
 /* keep strong contrast */
 .hero h1, .hero p, .hero a{ color:#fff !important; }
+
+/* Mobile readability fix for hero */
+@media (max-width: 768px) {
+  /* Remove the dark-to-transparent gradient overlay */
+  .hero::after {
+    display: none !important;
+    background: none !important;
+    content: none !important;
+  }
+
+  /* Solid background for better contrast */
+  .hero {
+    background: var(--brand-navy) !important;
+  }
+
+  /* Make sure all text stays visible */
+  .hero h1,
+  .hero p,
+  .hero .kicker {
+    color: #ffffff !important;
+  }
+}
