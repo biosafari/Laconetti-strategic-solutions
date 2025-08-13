@@ -109,3 +109,42 @@
     initMarketChart();
   });
 })();
+<script>
+async function askLaconetti(message) {
+  const r = await fetch('/.netlify/functions/ask', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message })
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error || 'Request failed');
+  return data.reply;
+}
+
+// Example hookup
+const form = document.querySelector('#agent-form');
+const input = document.querySelector('#agent-input');
+const log = document.querySelector('#agent-log');
+
+if (form && input && log) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = input.value.trim();
+    if (!msg) return;
+    append('You', msg);
+    input.value = '';
+    try {
+      const reply = await askLaconetti(msg);
+      append('Agent', reply);
+    } catch (err) {
+      append('Agent', 'Error. Check server logs.');
+    }
+  });
+}
+
+function append(who, text) {
+  const p = document.createElement('p');
+  p.textContent = `${who}: ${text}`;
+  log.appendChild(p);
+}
+</script>
