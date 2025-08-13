@@ -244,3 +244,97 @@
     </script>
   </body>
 </html>
+<!-- Laconetti Chat -->
+<div id="lac-chat" style="position:fixed;right:18px;bottom:18px;width:340px;max-width:90vw;font-family:system-ui,Arial,sans-serif;z-index:9999;">
+  <div id="lac-head" style="background:#0a2b4a;color:#fff;padding:10px 12px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center;">
+    <span>Laconetti Agent</span>
+    <button id="lac-open-lead" style="background:#DAA520;border:0;padding:6px 8px;color:#111;cursor:pointer;">Share details</button>
+  </div>
+  <div id="lac-box" style="background:#fff;border:1px solid #e3e3e3;height:380px;overflow:auto;padding:12px;"></div>
+  <form id="lac-form" style="display:flex;border:1px solid #e3e3e3;border-top:0;border-radius:0 0 12px 12px;background:#fff;">
+    <input id="lac-in" placeholder="Ask about services, ESG, entry, etc." style="flex:1;padding:10px;border:0;outline:none;">
+    <button style="padding:10px 12px;border:0;background:#DAA520;color:#111;cursor:pointer;">Send</button>
+  </form>
+</div>
+
+<!-- Hidden Netlify form for lead capture -->
+<form name="lac-leads" data-netlify="true" netlify hidden>
+  <input type="text" name="name">
+  <input type="text" name="organisation">
+  <input type="email" name="email">
+  <input type="text" name="phone">
+  <input type="text" name="service">
+  <input type="text" name="sector">
+  <input type="text" name="focus">
+  <input type="text" name="timeline">
+  <input type="text" name="budget">
+  <textarea name="notes"></textarea>
+</form>
+
+<script>
+(function(){
+  const box = document.getElementById('lac-box');
+  const form = document.getElementById('lac-form');
+  const input = document.getElementById('lac-in');
+
+  function add(role, text){
+    const el = document.createElement('div');
+    el.style.margin = '8px 0';
+    el.innerHTML = role==='user' ? `<b>You:</b> ${text}` : `<b>Agent:</b> ${text}`;
+    box.appendChild(el); box.scrollTop = box.scrollHeight;
+  }
+
+  async function ask(text){
+    add('user', text);
+    const res = await fetch('/api/ai', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ messages: [{role:'user', content:text}] })
+    });
+
+    const reader = res.body.getReader();
+    let acc=''; add('assistant',''); const last = box.lastChild;
+    const dec = new TextDecoder();
+    while(true){
+      const {value, done} = await reader.read();
+      if(done) break;
+      acc += dec.decode(value);
+      const chunks = acc.split('\n\n').filter(x=>x.startsWith('data: '));
+      const out = chunks.map(p=>{ try{ return JSON.parse(p.slice(6)).output_text||'' }catch{return ''} }).join('');
+      last.innerHTML = `<b>Agent:</b> ${out}`;
+      box.scrollTop = box.scrollHeight;
+    }
+  }
+
+  form.addEventListener('submit', e=>{
+    e.preventDefault();
+    const q = input.value.trim();
+    if(!q) return;
+    input.value='';
+    ask(q);
+  });
+
+  // Quick lead capture via Netlify Forms
+  document.getElementById('lac-open-lead').addEventListener('click', async ()=>{
+    const name = prompt('Your name'); if (name===null) return;
+    const org = prompt('Organisation'); if (org===null) return;
+    const email = prompt('Work email'); if (email===null) return;
+    const phone = prompt('Phone (optional)') || '';
+    const service = prompt('Service needed (e.g., Market Entry, ESG, Procurement)') || '';
+    const sector = prompt('Sector (Energy, Agriculture, Mining, Security)') || '';
+    const focus = prompt('Focus (Nigeria, UK interface, both)') || '';
+    const timeline = prompt('Timeline') || '';
+    const budget = prompt('Budget range (optional)') || '';
+    const notes = prompt('Notes (optional)') || '';
+
+    const f = document.forms['lac-leads'];
+    f.name.value = name; f.organisation.value = org; f.email.value = email; f.phone.value = phone;
+    f.service.value = service; f.sector.value = sector; f.focus.value = focus; f.timeline.value = timeline;
+    f.budget.value = budget; f.notes.value = notes;
+
+    const data = new FormData(f);
+    await fetch('/', { method:'POST', body:data });
+    add('assistant','Thanks. We will contact you from info@laconetti.com to book a 20‑minute discovery call.');
+  });
+})();
+</script>
