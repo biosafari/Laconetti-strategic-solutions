@@ -85,4 +85,66 @@ function cors() {
 }
 function json(statusCode, obj) {
   return { statusCode, headers: { ...cors(), 'Content-Type': 'application/json' }, body: JSON.stringify(obj) };
+}// netlify/functions/ask.js
+export default async function handler(req, res) {
+  // CORS for browser calls
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'content-type');
+    res.status(204).end();
+    return;
+  }
+
+  try {
+    if (req.method !== 'POST') {
+      res.status(405).json({ error: 'Method not allowed' });
+      return;
+    }
+
+    const { message } = req.body || {};
+    if (!message) {
+      res.status(400).json({ error: 'Message is required' });
+      return;
+    }
+
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      res.status(500).json({ error: 'OPENAI_API_KEY missing' });
+      return;
+    }
+
+    // Call OpenAI
+    const r = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        temperature: 0.2,
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are Laconetti Agent. Answer in short, clear sentences. Focus on services, ESG, stakeholder stability, Nigeria market entry, procurement, logistics, and conflict resolution. No emojis.'
+          },
+          { role: 'user', content: message }
+        ]
+      })
+    });
+
+    if (!r.ok) {
+      const t = await r.text().catch(() => '');
+      res.status(502).json({ error: 'Upstream error', detail: t });
+      return;
+    }
+
+    const data = await r.json();
+    const reply = data.choices?.[0]?.message?.content || 'No reply';
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.status(200).json({ reply });
+  } catch (e) {
+    res.status(500).json({ error: 'Server error', detail: String(e) });
+  }
 }
