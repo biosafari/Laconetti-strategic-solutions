@@ -10,15 +10,5 @@ publish = "."
 [build.environment]
 NODE_VERSION = "20"
 
-# Single-page app routing (safe to keep; ignore if not needed)
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
 [build]
 publish = "."
-# no build command for static sites
-
-[functions]
-directory = "netlify/functions"
-node_bundler = "esbuild"
