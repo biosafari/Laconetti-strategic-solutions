@@ -338,3 +338,19 @@
   });
 })();
 </script>
+async function ask(text){
+  add('user', text);
+  let res;
+  try{
+    res = await fetch('/api/ai', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ messages: [{ role:'user', content:text }] })
+    });
+  } catch {
+    add('assistant','Network error.'); return;
+  }
+  const data = await res.json().catch(()=>({}));
+  const out = data.output_text || data.text || data.message || `Server error ${res.status}`;
+  add('assistant', out);
+}
