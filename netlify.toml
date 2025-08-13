@@ -1,7 +1,17 @@
-[[build]
-  functions = "netlify/functions"
+# netlify.toml
 
+[build]
+# Your site is static HTML/CSS/JS in the repo root
+publish = "."
+
+# If you have no build step, omit "command"
+# command = ""
+
+[build.environment]
+NODE_VERSION = "20"
+
+# Single-page app routing (safe to keep; ignore if not needed)
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
+from = "/*"
+to = "/index.html"
+status = 200
