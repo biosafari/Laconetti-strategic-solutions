@@ -1,14 +1,10 @@
-# netlify.toml
-
 [build]
-# Your site is static HTML/CSS/JS in the repo root
 publish = "."
+command = ""
 
-# If you have no build step, omit "command"
-# command = ""
+[functions]
+directory = "netlify/functions"
+node_bundler = "esbuild"
 
 [build.environment]
-NODE_VERSION = "20"
-
-[build]
-publish = "."
+NODE_VERSION = "18"
