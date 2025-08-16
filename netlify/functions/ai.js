@@ -1,150 +1,71 @@
-// CommonJS Netlify Function (no streaming)
-exports.handler = async (event) => {
-  // CORS + methods
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: cors() };
-  }
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers: cors(), body: 'Method Not Allowed' };
-  }
-
-  // Parse body
-  let messages = [];
-  try { ({ messages } = JSON.parse(event.body || '{}')); } catch {}
-  if (!Array.isArray(messages)) {
-    return json(400, { error: 'messages must be an array' });
-  }
-
-  // Instant FAQ
-  const last = (messages[messages.length - 1]?.content || '').toLowerCase();
-  const faqs = [
-    { re: /(what do (you|we) do|\byour services\b|services do you offer)/i,
-      out: "We deliver market entry, ESG and stakeholder stabilization, procurement and logistics, and conflict‑resilient execution in Nigeria with a UK investor interface; which service do you need and what’s your timeline?" },
-    { re: /(how (do )?we start|getting started|engage|onboard)/i,
-      out: "We begin with a 20‑minute discovery call and an NDA if required; share your name, organisation, email, target sector, and desired start date." },
-    { re: /(where do you operate|which countries|locations?)/i,
-      out: "We execute on‑ground in Nigeria and handle investor relations and policy advisory from the UK; is your focus Nigeria, UK interface, or both?" },
-    { re: /(price|pricing|cost|rates|fees)/i,
-      out: "Pricing is proposal‑based after scoping; what service, scope, and budget range should we align to?" },
-    { re: /(proof|case studies?|track record|references?)/i,
-      out: "Highlights include Agip–Setraco mediation, Eterna alliances, and OML40 support via Origin Global Nig Ltd; should we send a one‑pager or schedule a briefing?" }
-  ];
-  const hit = faqs.find(f => f.re.test(last));
-  if (hit) return json(200, { output_text: hit.out });
-
-  // System brief
-  const system = {
-    role: 'system',
-    content: `
-You are Laconetti’s website assistant. Answer in short, factual sentences. If off‑scope, collect contact details and offer an intro call.
-Identity: Laconetti Strategic Solutions Ltd. Tagline: “Sustainable Strategy. Global Impact.”
-Positioning: Dual‑jurisdiction consultancy. Nigeria delivery, UK investor interface.
-Core services: Nigeria Market Entry; Stakeholder & ESG Stabilization; Procurement & Logistics; Conflict Resolution & Community Engagement; Energy & ESG Consulting; Local Content Compliance; Security Intelligence; Agricultural Development; Mining; Military Supply (non‑lethal); Diaspora Incubation & Policy Advisory; Import/Export, Wholesale, Retail, E‑commerce.
-Impact: Agip–Setraco mediation; Eterna alliances; IPND‑MoU outcomes; Chevron‑backed GMoU projects; OML40 via Origin Global Nig Ltd.
-Jurisdiction & compliance: UK voluntary roles per MoU until visa status permits directorship. No influence claims. Pricing after scoping.
-Contacts: info@laconetti.com • Nigeria: Warri • UK: Virtual, London • www.laconetti.com
-`
-  };
-
-  // Call OpenAI (Responses API, no stream)
-  try {
-    const r = await fetch('https://api.openai.com/v1/responses', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'gpt-5.1-mini',
-        input: [system, ...messages],
-        stream: false
-      })
-    });
-
-    const j = await r.json().catch(() => ({}));
-    if (!r.ok) return json(502, { error: `OpenAI ${r.status}`, details: j });
-
-    const text =
-      j.output_text ||
-      (Array.isArray(j.output) && j.output.map(o => o.content?.map(c => c.text).join(' ')).join(' ')) ||
-      'No output.';
-
-    return json(200, { output_text: text });
-  } catch (e) {
-    return json(500, { error: String(e) });
-  }
-};
-
-// helpers
-function cors() {
-  return {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type'
-  };
-}
-function json(statusCode, obj) {
-  return { statusCode, headers: { ...cors(), 'Content-Type': 'application/json' }, body: JSON.stringify(obj) };
-}// netlify/functions/ask.js
-export default async function handler(req, res) {
-  // CORS for browser calls
+// netlify/functions/ai.js
+export default async (req, context) => {
+  // CORS
   if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'content-type');
-    res.status(204).end();
-    return;
-  }
-
-  try {
-    if (req.method !== 'POST') {
-      res.status(405).json({ error: 'Method not allowed' });
-      return;
-    }
-
-    const { message } = req.body || {};
-    if (!message) {
-      res.status(400).json({ error: 'Message is required' });
-      return;
-    }
-
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      res.status(500).json({ error: 'OPENAI_API_KEY missing' });
-      return;
-    }
-
-    // Call OpenAI
-    const r = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
+    return new Response(null, {
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        temperature: 0.2,
-        messages: [
-          {
-            role: 'system',
-            content:
-              'You are Laconetti Agent. Answer in short, clear sentences. Focus on services, ESG, stakeholder stability, Nigeria market entry, procurement, logistics, and conflict resolution. No emojis.'
-          },
-          { role: 'user', content: message }
-        ]
-      })
     });
-
-    if (!r.ok) {
-      const t = await r.text().catch(() => '');
-      res.status(502).json({ error: 'Upstream error', detail: t });
-      return;
-    }
-
-    const data = await r.json();
-    const reply = data.choices?.[0]?.message?.content || 'No reply';
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.status(200).json({ reply });
-  } catch (e) {
-    res.status(500).json({ error: 'Server error', detail: String(e) });
   }
+
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ ok: false, error: 'POST only' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
+
+  const { prompt, messages } = await req.json().catch(() => ({}));
+  if (!prompt && !messages) {
+    return new Response(JSON.stringify({ ok: false, error: 'Provide prompt or messages[]' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
+
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    return new Response(JSON.stringify({ ok: false, error: 'Missing OPENAI_API_KEY' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
+
+  // Build Chat payload. Accept either simple prompt or Chat messages.
+  const chatMessages = messages ?? [
+    { role: 'system', content: 'You are a concise corporate website helper.' },
+    { role: 'user', content: String(prompt) },
+  ];
+
+  // OpenAI Chat Completions (Responses API) - standard JSON (no streaming)
+  const r = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o-mini',
+      temperature: 0.3,
+      messages: chatMessages,
+    }),
+  });
+
+  if (!r.ok) {
+    const errTxt = await r.text();
+    return new Response(JSON.stringify({ ok: false, error: errTxt }), {
+      status: r.status,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
+
+  const data = await r.json();
+  const text = data?.choices?.[0]?.message?.content ?? '';
+
+  return new Response(JSON.stringify({ ok: true, text }), {
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+  });
 }
