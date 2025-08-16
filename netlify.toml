@@ -8,3 +8,8 @@ node_bundler = "esbuild"
 
 [build.environment]
 NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/api/ai"
+  to = "/.netlify/functions/ai"
+  status = 200
