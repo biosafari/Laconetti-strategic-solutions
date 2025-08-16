@@ -354,3 +354,15 @@ async function ask(text){
   const out = data.output_text || data.text || data.message || `Server error ${res.status}`;
   add('assistant', out);
 }
+<script>
+async function askAI(message){
+  const res = await fetch('/api/ai', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ prompt: message })
+  });
+  const data = await res.json();
+  if(!data.ok) throw new Error(data.error || 'AI error');
+  return data.text;
+}
+</script>
