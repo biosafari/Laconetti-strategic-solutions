@@ -1,3 +1,5 @@
+<script defer src="/ai-widget.js"></script>
+
 // netlify/functions/ai.js
 export default async (req, context) => {
   // CORS
