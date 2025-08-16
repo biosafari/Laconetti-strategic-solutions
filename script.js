@@ -148,3 +148,8 @@ function append(who, text) {
   log.appendChild(p);
 }
 </script>
+fetch('http://localhost:8888/api/ai',{
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body: JSON.stringify({ prompt:'Test message' })
+}).then(r=>r.json()).then(console.log);
