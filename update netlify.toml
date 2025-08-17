@@ -1,0 +1,16 @@
+[build]
+publish = "."
+command = ""
+
+[functions]
+directory = "netlify/functions"
+node_bundler = "esbuild"
+
+[build.environment]
+NODE_VERSION = "18"
+
+# Single-page-app style fallback (prevents 404 on refresh)
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
