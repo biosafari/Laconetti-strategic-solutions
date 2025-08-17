@@ -1,0 +1,41 @@
+// Netlify Function: AI chat proxy
+export async function handler(event) {
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: "Method Not Allowed" };
+  }
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    return { statusCode: 500, body: "Missing OPENAI_API_KEY" };
+  }
+  try {
+    const { messages } = JSON.parse(event.body || "{}");
+    if (!Array.isArray(messages)) {
+      return { statusCode: 400, body: "Invalid payload" };
+    }
+    const resp = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages,
+        temperature: 0.3
+      })
+    });
+    if (!resp.ok) {
+      const text = await resp.text();
+      return { statusCode: resp.status, body: text };
+    }
+    const data = await resp.json();
+    const answer = data.choices?.[0]?.message?.content ?? "";
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ reply: answer })
+    };
+  } catch (e) {
+    return { statusCode: 500, body: String(e) };
+  }
+}
