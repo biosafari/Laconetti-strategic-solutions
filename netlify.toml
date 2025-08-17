@@ -13,5 +13,6 @@ NODE_VERSION = "18"
   from = "/api/ai"
   to = "/.netlify/functions/ai"
   status = 200
+
 [functions]
 directory = "netlify/functions"
