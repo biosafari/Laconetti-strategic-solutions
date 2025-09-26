@@ -1,39 +1,44 @@
-// netlify/functions/ai.js
-export async function handler(event) {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+const body = JSON.parse(event.body || '{}');
+
+// Accept either { messages: [...] } or { message: "..." } or { prompt: "..." }
+let messages = body.messages;
+if (!Array.isArray(messages)) {
+  const single = body.message || body.prompt;
+  if (!single) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Missing message(s)' }) };
   }
-
-  try {
-    const { messages } = JSON.parse(event.body || '{}');
-    if (!messages) return { statusCode: 400, body: 'Missing messages' };
-
-    const r = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        temperature: 0.2,
-        messages
-      })
-    });
-
-    const data = await r.json();
-
-    return {
-      statusCode: r.ok ? 200 : r.status,
-      headers: {
-        'Access-Control-Allow-Origin': 'https://www.laconetti.com',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        output_text: data?.choices?.[0]?.message?.content || 'No output'
-      })
-    };
-  } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: String(e) }) };
-  }
+  messages = [{ role: 'user', content: String(single) }];
 }
+
+const r = await fetch('https://api.openai.com/v1/chat/completions', {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    model: 'gpt-4o-mini',
+    temperature: 0.2,
+    messages
+  })
+});
+
+const data = await r.json();
+if (!r.ok) {
+  return {
+    statusCode: r.status,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ error: data.error?.message || 'Upstream API error' })
+  };
+}
+
+const reply =
+  data?.choices?.[0]?.message?.content ??
+  data?.choices?.[0]?.delta?.content ??
+  'No output';
+
+return {
+  statusCode: 200,
+  headers: { 'Content-Type': 'application/json' }, // no CORS header needed for same-origin
+  body: JSON.stringify({ reply })
+};
