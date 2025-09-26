@@ -116,40 +116,53 @@ async function askLaconetti(message) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message })
   });
-  const data = await r.json();
-  if (!r.ok) throw new Error(data.error || 'Request failed');
-  return data.reply;
+  const body = JSON.parse(event.body || '{}');
+
+// Accept { messages }, or { message }, or { prompt }
+let messages = body.messages;
+if (!Array.isArray(messages)) {
+  const single = body.message || body.prompt;
+  if (!single) {
+    return {
+      statusCode: 400,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Missing message(s)' })
+    };
+  }
+  messages = [{ role: 'user', content: String(single) }];
 }
 
-// Example hookup
-const form = document.querySelector('#agent-form');
-const input = document.querySelector('#agent-input');
-const log = document.querySelector('#agent-log');
+// Node 18 on Netlify has global fetch
+const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    model: 'gpt-4o-mini',
+    temperature: 0.2,
+    messages
+  })
+});
 
-if (form && input && log) {
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const msg = input.value.trim();
-    if (!msg) return;
-    append('You', msg);
-    input.value = '';
-    try {
-      const reply = await askLaconetti(msg);
-      append('Agent', reply);
-    } catch (err) {
-      append('Agent', 'Error. Check server logs.');
-    }
-  });
+const data = await resp.json();
+
+if (!resp.ok) {
+  return {
+    statusCode: resp.status,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ error: data.error?.message || 'Upstream API error' })
+  };
 }
 
-function append(who, text) {
-  const p = document.createElement('p');
-  p.textContent = `${who}: ${text}`;
-  log.appendChild(p);
-}
-</script>
-fetch('http://localhost:8888/api/ai',{
-  method:'POST',
-  headers:{'Content-Type':'application/json'},
-  body: JSON.stringify({ prompt:'Test message' })
-}).then(r=>r.json()).then(console.log);
+const reply =
+  data?.choices?.[0]?.message?.content ||
+  data?.choices?.[0]?.delta?.content ||
+  'No output';
+
+return {
+  statusCode: 200,
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ reply })
+};
