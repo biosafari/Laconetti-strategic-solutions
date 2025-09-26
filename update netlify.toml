@@ -9,7 +9,13 @@ node_bundler = "esbuild"
 [build.environment]
 NODE_VERSION = "18"
 
-# Single-page-app style fallback (prevents 404 on refresh)
+# Route API calls to the function
+[[redirects]]
+from = "/api/ai"
+to = "/.netlify/functions/ai"
+status = 200
+
+# Then handle SPA fallback
 [[redirects]]
 from = "/*"
 to = "/index.html"
