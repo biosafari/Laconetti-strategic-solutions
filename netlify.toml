@@ -1,12 +1,22 @@
 [build]
-publish = “.”
-command = “”
+publish = "."
+command = ""
 
 [functions]
-directory = “netlify/functions”
-node_bundler = “esbuild”
+directory = "netlify/functions"
+node_bundler = "esbuild"
 
+[build.environment]
+NODE_VERSION = "18"
+
+# API route first
 [[redirects]]
-from = “/api/ai”
-to = “/.netlify/functions/ai”
+from = "/api/ai"
+to = "/.netlify/functions/ai"
+status = 200
+
+# SPA fallback second
+[[redirects]]
+from = "/*"
+to = "/index.html"
 status = 200
