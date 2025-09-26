@@ -1,6 +1,12 @@
 [build]
-publish = "."
-command = ""
+publish = “.”
+command = “”
 
 [functions]
-directory = "netlify/functions"
+directory = “netlify/functions”
+node_bundler = “esbuild”
+
+[[redirects]]
+from = “/api/ai”
+to = “/.netlify/functions/ai”
+status = 200
