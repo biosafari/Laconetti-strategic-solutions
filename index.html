@@ -261,5 +261,94 @@
         });
       })();
     </script>
-  </body>
+  </body><script>
+(function () {
+  // Elements
+  const box  = document.getElementById('lac-box');
+  const form = document.getElementById('lac-form');
+  const input = document.getElementById('lac-in');
+  const leadBtn = document.getElementById('lac-open-lead');
+
+  // Render a chat line
+  function add(role, text) {
+    const el = document.createElement('div');
+    el.style.margin = '8px 0';
+    el.innerHTML = role === 'user' ? ('<b>You:</b> ' + text) : ('<b>Agent:</b> ' + text);
+    box.appendChild(el);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  // Call the Netlify function (non-streaming)
+  async function ask(message) {
+    add('user', message);
+    let res;
+    try {
+      res = await fetch('/api/ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+    } catch (e) {
+      add('assistant', 'Network error.');
+      return;
+    }
+
+    let data = {};
+    try {
+      data = await res.json();
+    } catch (e) {
+      add('assistant', 'Invalid server response.');
+      return;
+    }
+
+    if (!res.ok) {
+      add('assistant', data.error ? String(data.error) : ('Server error ' + res.status));
+      return;
+    }
+
+    const reply = data.reply || data.output_text || data.text || 'No output';
+    add('assistant', reply);
+  }
+
+  // Submit handler
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q = input.value.trim();
+    if (!q) return;
+    input.value = '';
+    ask(q);
+  });
+
+  // Lead capture via Netlify Forms (requires the hidden form in the page)
+  leadBtn.addEventListener('click', async () => {
+    const name = prompt('Your name'); if (name === null) return;
+    const org = prompt('Organisation'); if (org === null) return;
+    const email = prompt('Work email'); if (email === null) return;
+    const phone = prompt('Phone (optional)') || '';
+    const service = prompt('Service needed (e.g., Market Entry, ESG, Procurement)') || '';
+    const sector = prompt('Sector (Energy, Agriculture, Mining, Security)') || '';
+    const focus = prompt('Focus (Nigeria, UK interface, both)') || '';
+    const timeline = prompt('Timeline') || '';
+    const budget = prompt('Budget range (optional)') || '';
+    const notes = prompt('Notes (optional)') || '';
+
+    const f = document.forms['lac-leads'];
+    f['name'].value = name;
+    f['organisation'].value = org;
+    f['email'].value = email;
+    f['phone'].value = phone;
+    f['service'].value = service;
+    f['sector'].value = sector;
+    f['focus'].value = focus;
+    f['timeline'].value = timeline;
+    f['budget'].value = budget;
+    f['notes'].value = notes;
+
+    const data = new FormData(f);
+    await fetch('/', { method: 'POST', body: data });
+
+    add('assistant', 'Thanks. We will contact you from info@laconetti.com to book a 20-minute discovery call.');
+  });
+})();
+</script>
 </html>
