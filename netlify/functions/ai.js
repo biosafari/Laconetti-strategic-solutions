@@ -1,44 +1,75 @@
-const body = JSON.parse(event.body || '{}');
+// netlify/functions/ai.js
 
-// Accept either { messages: [...] } or { message: "..." } or { prompt: "..." }
-let messages = body.messages;
-if (!Array.isArray(messages)) {
-  const single = body.message || body.prompt;
-  if (!single) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Missing message(s)' }) };
+const fetch = require('node-fetch'); // needed in Netlify Node 18 if not globally available
+
+exports.handler = async (event) => {
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
   }
-  messages = [{ role: 'user', content: String(single) }];
-}
 
-const r = await fetch('https://api.openai.com/v1/chat/completions', {
-  method: 'POST',
-  headers: {
-    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    model: 'gpt-4o-mini',
-    temperature: 0.2,
-    messages
-  })
-});
+  try {
+    if (!process.env.OPENAI_API_KEY) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'Missing OPENAI_API_KEY' })
+      };
+    }
 
-const data = await r.json();
-if (!r.ok) {
-  return {
-    statusCode: r.status,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ error: data.error?.message || 'Upstream API error' })
-  };
-}
+    const body = JSON.parse(event.body || '{}');
 
-const reply =
-  data?.choices?.[0]?.message?.content ??
-  data?.choices?.[0]?.delta?.content ??
-  'No output';
+    // Accept flexible input: { messages }, { message }, or { prompt }
+    let messages = body.messages;
+    if (!Array.isArray(messages)) {
+      const single = body.message || body.prompt;
+      if (!single) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'Missing message(s)' })
+        };
+      }
+      messages = [{ role: 'user', content: String(single) }];
+    }
 
-return {
-  statusCode: 200,
-  headers: { 'Content-Type': 'application/json' }, // no CORS header needed for same-origin
-  body: JSON.stringify({ reply })
+    const r = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        temperature: 0.2,
+        messages
+      })
+    });
+
+    const data = await r.json();
+
+    if (!r.ok) {
+      return {
+        statusCode: r.status,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          error: data.error?.message || 'Upstream API error'
+        })
+      };
+    }
+
+    const reply =
+      data?.choices?.[0]?.message?.content ||
+      data?.choices?.[0]?.delta?.content ||
+      'No output';
+
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reply })
+    };
+  } catch (e) {
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: String(e) })
+    };
+  }
 };
