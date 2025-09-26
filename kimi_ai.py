@@ -1,25 +1,26 @@
-import os
 from openai import OpenAI, OpenAIError
 
-def simple_chat(client: OpenAI, model_name: str) -> str:
-    messages = [
-        {"role": "system", "content": "You are Kimi, an AI assistant created by Moonshot AI."},
-        {"role": "user", "content": "Please give a brief self-introduction."},
-    ]
-
+def simple_chat(client: OpenAI, model: str):
     try:
-        response = client.chat.completions.create(
-            model=model_name,
-            messages=messages,
-            stream=False,
-            temperature=0.6,
+        r = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": "You are Kimi, an AI assistant created by Moonshot AI."},
+                {"role": "user", "content": "Please give a brief self-introduction."},
+            ],
             max_tokens=256,
+            temperature=0.7,
+            stream=False,
         )
-    except OpenAIError as exc:
-        # catches 400, 401, 404, 429, 500 …
-        print("❌  OpenAIError:", exc)
-        return ""
+    except OpenAIError as e:
+        return print("❌ API error:", e)
 
+    # cope with both chat and legacy response shapes
+    msg = r.choices[0].message
+    text = msg.content if msg.content is not None else msg.get("text", "")
+    print(text or "<empty response>")
+
+    
     # Safety-check the payload
     if not response.choices:
         print("⚠️  No choices returned")
