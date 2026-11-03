@@ -22,7 +22,7 @@
       .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1rem;border-radius:999px;border:1px solid transparent;font-weight:700}
       .btn.gold{background:var(--brand-gold);color:#101010} .btn.ghost{border-color:var(--brand-gold);color:var(--brand-gold)}
       #themeToggle{background:none;border:1px solid var(--muted);border-radius:999px;padding:.4rem .65rem;cursor:pointer}
-      .hero{position:relative;isolation:isolate;overflow:hidden;border-radius:20px;background:linear-gradient(90deg,var(--brand-navy) 0%,var(--brand-navy-2) 50%,transparent 50%),url('assets/hero.jpg') right/cover no-repeat}
+      .hero{position:relative;isolation:isolate;overflow:hidden;border-radius:20px;background:linear-gradient(90deg,var(--brand-navy) 0%,var(--brand-navy-2) 50%,transparent 50%),url('hero.jpg') right/cover no-repeat}
       .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,43,74,.85) 0%,rgba(10,43,74,.6) 40%,rgba(10,43,74,0) 60%)}
       .hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.15fr .85fr;min-height:58vh}
       .hero-copy{padding:clamp(1.25rem,4vw,3rem);color:#fff}
@@ -32,7 +32,7 @@
       .badge{background:rgba(218,165,32,.95);color:#111;border-radius:999px;padding:.35rem .65rem;font-weight:800;font-size:.8rem}
       .mosaic{margin:2.5rem 0;display:grid;grid-template-columns:2fr 1fr;gap:14px} .mosaic .a{grid-row:span 2}
       .tile{position:relative;border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
-      .tile>img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9)} .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.0) 20%,rgba(0,0,0,.35) 100%)}
+      .tile>img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:saturate(.9)} .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.0) 20%,rgba(0,0,0,.35) 100%)}
       .tile .label{position:absolute;left:12px;bottom:10px;color:#fff;font-weight:700;font-size:.85rem;letter-spacing:.02em}
       .credentials{background:var(--brand-navy);color:#fff;border-radius:16px;padding:1.25rem}
       .cred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -55,6 +55,31 @@
       .cta h2{color:#fff} .cta .bridge{justify-self:end;inline-size:min(380px,100%)}
       footer{margin:2.5rem 0 2rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
       @media (max-width:960px){.hero-inner{grid-template-columns:1fr}.mosaic{grid-template-columns:1fr}.cred-grid,.wave-grid,.cards,.cta{grid-template-columns:1fr}}
+
+      @media (max-width:700px){.mosaic .tile{height:220px;min-height:220px}.mosaic .tile>img{height:100%;object-fit:cover}}\n      /* Until an approved mining photo is supplied, keep the tile without a broken image. */
+      .mining-placeholder{min-height:190px;background:linear-gradient(135deg,#0a2b4a,#36536a 60%,#8a7138)}
+      /* Mobile: keep content within the viewport and prevent horizontal scrolling. */
+      html,body{max-width:100%;overflow-x:clip}
+      .nav,.nav nav,.nav ul,.hero-inner,.hero-copy{min-width:0}
+      .hero-copy h1,.hero-copy p{overflow-wrap:break-word}
+      @media (max-width:700px){
+        .container{width:min(100% - 32px,1120px)}
+        .nav{flex-wrap:wrap;gap:.75rem}
+        .brand{font-size:1rem}
+        .nav nav{order:3;width:100%;overflow-x:auto}
+        .nav ul{gap:1rem;flex-wrap:wrap}
+        .nav a{white-space:nowrap}
+        .nav>div:last-child{margin-left:auto}
+        .hero-inner{grid-template-columns:minmax(0,1fr)}
+        .hero-copy{padding:1.25rem}
+        .hero h1{font-size:clamp(1.7rem,8vw,2.6rem);line-height:1.2}
+        .hero-badges{flex-wrap:wrap}
+        .mosaic,.cards,.cred-grid,.wave-grid,.cta{min-width:0}
+        .cta .bridge{justify-self:stretch}
+        footer{flex-wrap:wrap;gap:1rem}
+      }
+      /* The legacy inline agent has no working input form; use the Tawk launcher. */
+      #lac-chat{display:none!important}
       @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
     </style>
   </head>
@@ -95,9 +120,9 @@
     </section>
 
     <section class="container mosaic" aria-label="Sectors">
-      <figure class="tile a"><img src="assets/sector-energy.jpg" alt="Offshore energy infrastructure"><figcaption class="label">Energy</figcaption></figure>
-      <figure class="tile"><img src="assets/sector-agri.jpg" alt="Agricultural value chain"><figcaption class="label">Agriculture</figcaption></figure>
-      <figure class="tile"><img src="assets/sector-mining.jpg" alt="Mining corridor"><figcaption class="label">Mining</figcaption></figure>
+      <figure class="tile a"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/WINDFALL_ENGINEERING_AT_WORK_OFFSHORE_NIGERIA.jpg?width=1280" alt="Nigerian engineering personnel working on an offshore oil production platform" loading="lazy"><figcaption class="label">Energy</figcaption></figure>
+      <figure class="tile"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/A_cassava_Farm.jpg?width=1280" alt="Cassava farmland in Ogoni, Niger Delta, Nigeria" loading="lazy"><figcaption class="label">Agriculture</figcaption></figure>
+      <figure class="tile mining-placeholder" role="img" aria-label="Mining sector"><figcaption class="label">Mining</figcaption></figure>
     </section>
 
     <section class="container credentials" id="services">
@@ -155,17 +180,10 @@
       <button id="backTop" class="btn ghost" aria-label="Back to top">Top ↑</button>
     </footer>
 
-    <!-- Laconetti Chat -->
-    <div id="lac-chat" style="position:fixed;right:18px;bottom:18px;width:340px;max-width:90vw;font-family:system-ui,Arial,sans-serif;z-index:9999;">
-      <div id="lac-head" style="background:#0a2b4a;color:#fff;padding:10px 12px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center;">
-        <span>Laconetti Agent</span>
-        <button id="lac-open-lead" style="background:#DAA520;border:0;padding:6px 8px;color:#111;cursor:pointer;">Share details</button>
-      </div>
-      <div id="lac-box" style="background:#fff;border:1px solid #e3e3e3;height:380px;overflow:auto;padding:12px;"></div>
-     
-    </div>
+    <!-- Mobile chat launcher: keeps the third-party chat closed until requested. -->
+    <button id="lac-mobile-chat" type="button" aria-label="Open Laconetti chat" aria-expanded="false" style="display:none;position:fixed;right:16px;bottom:20px;z-index:99999;width:56px;height:56px;border:0;border-radius:50%;background:#0a2b4a;color:white;box-shadow:0 4px 18px #0005;font-size:25px;cursor:pointer;">&#128172;</button>
 
-    <!-- Hidden Netlify form for lead capture -->
+    <!-- Image credits: Energy: Windfallengprojectsltd, CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:WINDFALL_ENGINEERING_AT_WORK_OFFSHORE_NIGERIA.jpg ; Agriculture: Kobo Medlyn, CC BY 4.0, https://commons.wikimedia.org/wiki/File:A_cassava_Farm.jpg -->\n    <!-- Hidden Netlify form for lead capture -->
     <form name="lac-leads" data-netlify="true" netlify hidden>
       <input type="hidden" name="form-name" value="lac-leads">
       <input type="text" name="name">
@@ -200,68 +218,35 @@
         document.getElementById('y').textContent=new Date().getFullYear();
       })();
 
-      // chat widget
-      (function(){
-        const box=document.getElementById('lac-box');
-        const form=document.getElementById('lac-form');
-        const input=document.getElementById('lac-in');
-
-        function add(role,text){
-          const el=document.createElement('div');
-          el.style.margin='8px 0';
-          el.innerHTML=role==='user'?('<b>You:</b> '+text):('<b>Agent:</b> '+text);
-          box.appendChild(el); box.scrollTop=box.scrollHeight;
-        }
-
-        async function ask(text){
-          add('user',text);
-          let res;
-          try{
-            res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text})});
-          }catch{
-            add('assistant','Network error.'); return;
-          }
-          const data=await res.json().catch(()=>({}));
-          const out=data.reply||data.output_text||data.text||data.message||('Server error '+res.status);
-          add('assistant',out);
-        }
-
-        form.addEventListener('submit',e=>{
-          e.preventDefault();
-          const q=input.value.trim();
-          if(!q) return;
-          input.value='';
-          ask(q);
-        });
-
-        // lead capture via Netlify Forms
-        document.getElementById('lac-open-lead').addEventListener('click',async()=>{
-          const name=prompt('Your name'); if(name===null) return;
-          const org=prompt('Organisation'); if(org===null) return;
-          const email=prompt('Work email'); if(email===null) return;
-          const phone=prompt('Phone (optional)')||'';
-          const service=prompt('Service needed (e.g., Market Entry, ESG, Procurement)')||'';
-          const sector=prompt('Sector (Energy, Agriculture, Mining, Security)')||'';
-          const focus=prompt('Focus (Nigeria, UK interface, both)')||'';
-          const timeline=prompt('Timeline')||'';
-          const budget=prompt('Budget range (optional)')||'';
-          const notes=prompt('Notes (optional)')||'';
-
-          const f=document.forms['lac-leads'];
-          f['name'].value=name; f['organisation'].value=org; f['email'].value=email; f['phone'].value=phone;
-          f['service'].value=service; f['sector'].value=sector; f['focus'].value=focus; f['timeline'].value=timeline;
-          f['budget'].value=budget; f['notes'].value=notes;
-
-          const data=new FormData(f);
-          await fetch('/',{method:'POST',body:data});
-          add('assistant','Thanks. We will contact you from info@laconetti.com to book a 20-minute discovery call.');
-        });
-      })();
     </script>
 
     <!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+  var mobile=window.matchMedia('(max-width:700px)').matches;
+  var launcher=document.getElementById('lac-mobile-chat');
+  if(mobile && launcher){
+    launcher.style.display='block';
+    launcher.addEventListener('click',function(){
+      if(typeof Tawk_API.showWidget==='function') Tawk_API.showWidget();
+      if(typeof Tawk_API.maximize==='function') Tawk_API.maximize();
+      launcher.style.display='none';
+      launcher.setAttribute('aria-expanded','true');
+    });
+  }
+  Tawk_API.onLoad=function(){
+    if(typeof Tawk_API.minimize==='function') Tawk_API.minimize();
+    if(mobile && typeof Tawk_API.hideWidget==='function') Tawk_API.hideWidget();
+  };
+  Tawk_API.onChatMinimized=function(){
+    if(mobile){
+      if(typeof Tawk_API.hideWidget==='function') Tawk_API.hideWidget();
+      if(launcher){launcher.style.display='block';launcher.setAttribute('aria-expanded','false');}
+    }
+  };
+  Tawk_API.onChatEnded=Tawk_API.onChatMinimized;
+})();
 (function(){
 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
 s1.async=true;
@@ -273,94 +258,5 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <!--End of Tawk.to Script-->
     
-  </body><script>
-(function () {
-  // Elements
-  const box  = document.getElementById('lac-box');
-  const form = document.getElementById('lac-form');
-  const input = document.getElementById('lac-in');
-  const leadBtn = document.getElementById('lac-open-lead');
-
-  // Render a chat line
-  function add(role, text) {
-    const el = document.createElement('div');
-    el.style.margin = '8px 0';
-    el.innerHTML = role === 'user' ? ('<b>You:</b> ' + text) : ('<b>Agent:</b> ' + text);
-    box.appendChild(el);
-    box.scrollTop = box.scrollHeight;
-  }
-
-  // Call the Netlify function (non-streaming)
-  async function ask(message) {
-    add('user', message);
-    let res;
-    try {
-      res = await fetch('/api/ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
-      });
-    } catch (e) {
-      add('assistant', 'Network error.');
-      return;
-    }
-
-    let data = {};
-    try {
-      data = await res.json();
-    } catch (e) {
-      add('assistant', 'Invalid server response.');
-      return;
-    }
-
-    if (!res.ok) {
-      add('assistant', data.error ? String(data.error) : ('Server error ' + res.status));
-      return;
-    }
-
-    const reply = data.reply || data.output_text || data.text || 'No output';
-    add('assistant', reply);
-  }
-
-  // Submit handler
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const q = input.value.trim();
-    if (!q) return;
-    input.value = '';
-    ask(q);
-  });
-
-  // Lead capture via Netlify Forms (requires the hidden form in the page)
-  leadBtn.addEventListener('click', async () => {
-    const name = prompt('Your name'); if (name === null) return;
-    const org = prompt('Organisation'); if (org === null) return;
-    const email = prompt('Work email'); if (email === null) return;
-    const phone = prompt('Phone (optional)') || '';
-    const service = prompt('Service needed (e.g., Market Entry, ESG, Procurement)') || '';
-    const sector = prompt('Sector (Energy, Agriculture, Mining, Security)') || '';
-    const focus = prompt('Focus (Nigeria, UK interface, both)') || '';
-    const timeline = prompt('Timeline') || '';
-    const budget = prompt('Budget range (optional)') || '';
-    const notes = prompt('Notes (optional)') || '';
-
-    const f = document.forms['lac-leads'];
-    f['name'].value = name;
-    f['organisation'].value = org;
-    f['email'].value = email;
-    f['phone'].value = phone;
-    f['service'].value = service;
-    f['sector'].value = sector;
-    f['focus'].value = focus;
-    f['timeline'].value = timeline;
-    f['budget'].value = budget;
-    f['notes'].value = notes;
-
-    const data = new FormData(f);
-    await fetch('/', { method: 'POST', body: data });
-
-    add('assistant', 'Thanks. We will contact you from info@laconetti.com to book a 20-minute discovery call.');
-  });
-})();
-</script>
+  </body>
 </html>
