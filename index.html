@@ -22,7 +22,7 @@
       .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1rem;border-radius:999px;border:1px solid transparent;font-weight:700}
       .btn.gold{background:var(--brand-gold);color:#101010} .btn.ghost{border-color:var(--brand-gold);color:var(--brand-gold)}
       #themeToggle{background:none;border:1px solid var(--muted);border-radius:999px;padding:.4rem .65rem;cursor:pointer}
-      .hero{position:relative;isolation:isolate;overflow:hidden;border-radius:20px;background:linear-gradient(90deg,var(--brand-navy) 0%,var(--brand-navy-2) 50%,transparent 50%),url('assets/hero.jpg') right/cover no-repeat}
+      .hero{position:relative;isolation:isolate;overflow:hidden;border-radius:20px;background:linear-gradient(90deg,var(--brand-navy) 0%,var(--brand-navy-2) 50%,transparent 50%),url('hero.jpg') right/cover no-repeat}
       .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,43,74,.85) 0%,rgba(10,43,74,.6) 40%,rgba(10,43,74,0) 60%)}
       .hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.15fr .85fr;min-height:58vh}
       .hero-copy{padding:clamp(1.25rem,4vw,3rem);color:#fff}
@@ -56,6 +56,8 @@
       footer{margin:2.5rem 0 2rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
       @media (max-width:960px){.hero-inner{grid-template-columns:1fr}.mosaic{grid-template-columns:1fr}.cred-grid,.wave-grid,.cards,.cta{grid-template-columns:1fr}}
 
+      /* Until an approved mining photo is supplied, keep the tile without a broken image. */
+      .mining-placeholder{min-height:190px;background:linear-gradient(135deg,#0a2b4a,#36536a 60%,#8a7138)}
       /* Mobile: keep content within the viewport and prevent horizontal scrolling. */
       html,body{max-width:100%;overflow-x:clip}
       .nav,.nav nav,.nav ul,.hero-inner,.hero-copy{min-width:0}
@@ -118,9 +120,9 @@
     </section>
 
     <section class="container mosaic" aria-label="Sectors">
-      <figure class="tile a"><img src="assets/sector-energy.jpg" alt="Offshore energy infrastructure"><figcaption class="label">Energy</figcaption></figure>
-      <figure class="tile"><img src="assets/sector-agri.jpg" alt="Agricultural value chain"><figcaption class="label">Agriculture</figcaption></figure>
-      <figure class="tile"><img src="assets/sector-mining.jpg" alt="Mining corridor"><figcaption class="label">Mining</figcaption></figure>
+      <figure class="tile a"><img src="sector-energy.jpg" alt="Offshore energy infrastructure"><figcaption class="label">Energy</figcaption></figure>
+      <figure class="tile"><img src="sector-agri.jpg" alt="Agricultural value chain"><figcaption class="label">Agriculture</figcaption></figure>
+      <figure class="tile mining-placeholder" role="img" aria-label="Mining sector"><figcaption class="label">Mining</figcaption></figure>
     </section>
 
     <section class="container credentials" id="services">
