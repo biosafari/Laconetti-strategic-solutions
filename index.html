@@ -32,7 +32,7 @@
       .badge{background:rgba(218,165,32,.95);color:#111;border-radius:999px;padding:.35rem .65rem;font-weight:800;font-size:.8rem}
       .mosaic{margin:2.5rem 0;display:grid;grid-template-columns:2fr 1fr;gap:14px} .mosaic .a{grid-row:span 2}
       .tile{position:relative;border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
-      .tile>img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9)} .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.0) 20%,rgba(0,0,0,.35) 100%)}
+      .tile>img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:saturate(.9)} .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.0) 20%,rgba(0,0,0,.35) 100%)}
       .tile .label{position:absolute;left:12px;bottom:10px;color:#fff;font-weight:700;font-size:.85rem;letter-spacing:.02em}
       .credentials{background:var(--brand-navy);color:#fff;border-radius:16px;padding:1.25rem}
       .cred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -56,7 +56,7 @@
       footer{margin:2.5rem 0 2rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
       @media (max-width:960px){.hero-inner{grid-template-columns:1fr}.mosaic{grid-template-columns:1fr}.cred-grid,.wave-grid,.cards,.cta{grid-template-columns:1fr}}
 
-      /* Until an approved mining photo is supplied, keep the tile without a broken image. */
+      @media (max-width:700px){.mosaic .tile{height:220px;min-height:220px}.mosaic .tile>img{height:100%;object-fit:cover}}\n      /* Until an approved mining photo is supplied, keep the tile without a broken image. */
       .mining-placeholder{min-height:190px;background:linear-gradient(135deg,#0a2b4a,#36536a 60%,#8a7138)}
       /* Mobile: keep content within the viewport and prevent horizontal scrolling. */
       html,body{max-width:100%;overflow-x:clip}
@@ -120,8 +120,8 @@
     </section>
 
     <section class="container mosaic" aria-label="Sectors">
-      <figure class="tile a"><img src="sector-energy.jpg" alt="Offshore energy infrastructure"><figcaption class="label">Energy</figcaption></figure>
-      <figure class="tile"><img src="sector-agri.jpg" alt="Agricultural value chain"><figcaption class="label">Agriculture</figcaption></figure>
+      <figure class="tile a"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Forcados_offshore_Nigeria%2C_shell_oil_field.jpg?width=1280" alt="Photograph of the Forcados offshore oil field in Nigeria" loading="lazy"><figcaption class="label">Energy</figcaption></figure>
+      <figure class="tile"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/A_cassava_Farm.jpg?width=1280" alt="Cassava farmland in Ogoni, Niger Delta, Nigeria" loading="lazy"><figcaption class="label">Agriculture</figcaption></figure>
       <figure class="tile mining-placeholder" role="img" aria-label="Mining sector"><figcaption class="label">Mining</figcaption></figure>
     </section>
 
@@ -183,7 +183,7 @@
     <!-- Mobile chat launcher: keeps the third-party chat closed until requested. -->
     <button id="lac-mobile-chat" type="button" aria-label="Open Laconetti chat" aria-expanded="false" style="display:none;position:fixed;right:16px;bottom:20px;z-index:99999;width:56px;height:56px;border:0;border-radius:50%;background:#0a2b4a;color:white;box-shadow:0 4px 18px #0005;font-size:25px;cursor:pointer;">&#128172;</button>
 
-    <!-- Hidden Netlify form for lead capture -->
+    <!-- Image credits: Energy: Chief Charles, CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:Forcados_offshore_Nigeria,_shell_oil_field.jpg ; Agriculture: Kobo Medlyn, CC BY 4.0, https://commons.wikimedia.org/wiki/File:A_cassava_Farm.jpg -->\n    <!-- Hidden Netlify form for lead capture -->
     <form name="lac-leads" data-netlify="true" netlify hidden>
       <input type="hidden" name="form-name" value="lac-leads">
       <input type="text" name="name">
