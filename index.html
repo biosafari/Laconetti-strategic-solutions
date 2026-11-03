@@ -55,6 +55,29 @@
       .cta h2{color:#fff} .cta .bridge{justify-self:end;inline-size:min(380px,100%)}
       footer{margin:2.5rem 0 2rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
       @media (max-width:960px){.hero-inner{grid-template-columns:1fr}.mosaic{grid-template-columns:1fr}.cred-grid,.wave-grid,.cards,.cta{grid-template-columns:1fr}}
+
+      /* Mobile: keep content within the viewport and prevent horizontal scrolling. */
+      html,body{max-width:100%;overflow-x:clip}
+      .nav,.nav nav,.nav ul,.hero-inner,.hero-copy{min-width:0}
+      .hero-copy h1,.hero-copy p{overflow-wrap:break-word}
+      @media (max-width:700px){
+        .container{width:min(100% - 32px,1120px)}
+        .nav{flex-wrap:wrap;gap:.75rem}
+        .brand{font-size:1rem}
+        .nav nav{order:3;width:100%;overflow-x:auto}
+        .nav ul{gap:1rem;flex-wrap:wrap}
+        .nav a{white-space:nowrap}
+        .nav>div:last-child{margin-left:auto}
+        .hero-inner{grid-template-columns:minmax(0,1fr)}
+        .hero-copy{padding:1.25rem}
+        .hero h1{font-size:clamp(1.7rem,8vw,2.6rem);line-height:1.2}
+        .hero-badges{flex-wrap:wrap}
+        .mosaic,.cards,.cred-grid,.wave-grid,.cta{min-width:0}
+        .cta .bridge{justify-self:stretch}
+        footer{flex-wrap:wrap;gap:1rem}
+      }
+      /* The legacy inline agent has no working input form; use the Tawk launcher. */
+      #lac-chat{display:none!important}
       @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
     </style>
   </head>
@@ -262,6 +285,7 @@
     <!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+Tawk_API.onLoad=function(){if(typeof Tawk_API.minimize==="function") Tawk_API.minimize();};
 (function(){
 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
 s1.async=true;
@@ -273,94 +297,5 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <!--End of Tawk.to Script-->
     
-  </body><script>
-(function () {
-  // Elements
-  const box  = document.getElementById('lac-box');
-  const form = document.getElementById('lac-form');
-  const input = document.getElementById('lac-in');
-  const leadBtn = document.getElementById('lac-open-lead');
-
-  // Render a chat line
-  function add(role, text) {
-    const el = document.createElement('div');
-    el.style.margin = '8px 0';
-    el.innerHTML = role === 'user' ? ('<b>You:</b> ' + text) : ('<b>Agent:</b> ' + text);
-    box.appendChild(el);
-    box.scrollTop = box.scrollHeight;
-  }
-
-  // Call the Netlify function (non-streaming)
-  async function ask(message) {
-    add('user', message);
-    let res;
-    try {
-      res = await fetch('/api/ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
-      });
-    } catch (e) {
-      add('assistant', 'Network error.');
-      return;
-    }
-
-    let data = {};
-    try {
-      data = await res.json();
-    } catch (e) {
-      add('assistant', 'Invalid server response.');
-      return;
-    }
-
-    if (!res.ok) {
-      add('assistant', data.error ? String(data.error) : ('Server error ' + res.status));
-      return;
-    }
-
-    const reply = data.reply || data.output_text || data.text || 'No output';
-    add('assistant', reply);
-  }
-
-  // Submit handler
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const q = input.value.trim();
-    if (!q) return;
-    input.value = '';
-    ask(q);
-  });
-
-  // Lead capture via Netlify Forms (requires the hidden form in the page)
-  leadBtn.addEventListener('click', async () => {
-    const name = prompt('Your name'); if (name === null) return;
-    const org = prompt('Organisation'); if (org === null) return;
-    const email = prompt('Work email'); if (email === null) return;
-    const phone = prompt('Phone (optional)') || '';
-    const service = prompt('Service needed (e.g., Market Entry, ESG, Procurement)') || '';
-    const sector = prompt('Sector (Energy, Agriculture, Mining, Security)') || '';
-    const focus = prompt('Focus (Nigeria, UK interface, both)') || '';
-    const timeline = prompt('Timeline') || '';
-    const budget = prompt('Budget range (optional)') || '';
-    const notes = prompt('Notes (optional)') || '';
-
-    const f = document.forms['lac-leads'];
-    f['name'].value = name;
-    f['organisation'].value = org;
-    f['email'].value = email;
-    f['phone'].value = phone;
-    f['service'].value = service;
-    f['sector'].value = sector;
-    f['focus'].value = focus;
-    f['timeline'].value = timeline;
-    f['budget'].value = budget;
-    f['notes'].value = notes;
-
-    const data = new FormData(f);
-    await fetch('/', { method: 'POST', body: data });
-
-    add('assistant', 'Thanks. We will contact you from info@laconetti.com to book a 20-minute discovery call.');
-  });
-})();
-</script>
+  </body>
 </html>
