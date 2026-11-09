@@ -9,14 +9,11 @@ node_bundler = "esbuild"
 [build.environment]
 NODE_VERSION = "18"
 
-# API route first
+# Preserve the API endpoint. Static HTML pages are served directly.
 [[redirects]]
 from = "/api/ai"
 to = "/.netlify/functions/ai"
 status = 200
 
-# SPA fallback second
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
+# Do not rewrite unknown URLs to the homepage with HTTP 200.
+# Netlify should return its normal 404 response for missing pages.
