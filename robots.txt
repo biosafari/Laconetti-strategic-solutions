@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://laconetti.com/sitemap.xml
