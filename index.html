@@ -36,9 +36,27 @@
       .tile .label{position:absolute;left:12px;bottom:10px;color:#fff;font-weight:700;font-size:.85rem;letter-spacing:.02em}
       .credentials{background:var(--brand-navy);color:#fff;border-radius:16px;padding:1.25rem}
       .cred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-      .cred{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1rem 1.25rem;position:relative;overflow:hidden}
-      .seal{position:absolute;right:14px;bottom:14px;width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff6d4 0%,#f3d079 32%,var(--brand-gold) 55%,var(--brand-gold-2) 75%);box-shadow:0 6px 16px rgba(0,0,0,.35);display:grid;place-items:center;color:#111;font-weight:900;letter-spacing:.06em;font-size:.7rem}
-      .cred h3{color:#fff} .cred p{color:#d8e2ea;margin:.35rem 0 0}
+      .cred{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:1rem 1.25rem;min-width:0}
+      .service-details{min-width:0}
+      .service-summary{display:grid;grid-template-columns:minmax(0,1fr) 74px;gap:14px;align-items:center;list-style:none;cursor:pointer;min-height:148px}
+      .service-summary::-webkit-details-marker{display:none}
+      .service-summary:focus-visible{outline:3px solid var(--brand-gold);outline-offset:5px;border-radius:7px}
+      .service-summary:hover .service-action,.service-summary:focus-visible .service-action{text-decoration:underline}
+      .service-copy{min-width:0;display:block}
+      .service-title{display:block;font:700 1.125rem/1.35 Montserrat,Lato,sans-serif;color:#fff}
+      .service-teaser{display:block;color:#d8e2ea;margin:.65rem 0;font-size:1rem;overflow-wrap:anywhere}
+      .service-action{display:inline-block;color:#ffce57;font-size:.9rem;font-weight:700;padding-top:.2rem}
+      .service-action::after{content:" ▾"}
+      .service-details[open] .service-action::after{content:" ▴"}
+      .seal{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff6d4 0%,#f3d079 32%,var(--brand-gold) 55%,var(--brand-gold-2) 75%);box-shadow:0 6px 16px rgba(0,0,0,.35);display:grid;place-items:center;color:#111;font-weight:900;letter-spacing:.06em;font-size:.7rem;flex-shrink:0}
+      .service-expanded{border-top:1px solid rgba(255,255,255,.25);margin-top:16px;padding-top:16px;color:#e7eef6}
+      .service-expanded h4{margin:0 0 .5rem;font:700 1rem/1.4 Montserrat,Lato,sans-serif;color:#fff}
+      .service-expanded p{margin:.25rem 0 .75rem}
+      .service-expanded ol{margin:.4rem 0 1rem;padding-left:1.35rem}
+      .service-expanded li{padding-left:.15rem;margin-bottom:.45rem}
+      .service-expanded .service-contact{display:inline-block;padding:.5rem .9rem;border:1px solid var(--brand-gold);border-radius:25px;color:#ffce57;font-weight:700;text-decoration:none}
+      .service-expanded .service-contact:hover{text-decoration:underline}
+      @media(max-width:700px){.service-summary{grid-template-columns:minmax(0,1fr) 58px;gap:12px;min-height:0}.seal{width:58px;height:58px;font-size:.65rem}.cred{padding:1.1rem}}
       .wave-wrap{margin:2.75rem 0;border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
       .wave{--bg:linear-gradient(180deg,#ffffff 0%,#f7fafc 100%);background:var(--bg);position:relative;padding:2rem 0 0}
       .wave svg{display:block;width:100%;height:auto}
@@ -128,9 +146,57 @@
 
     <section class="container credentials" id="services">
       <div class="cred-grid">
-        <div class="cred"><h3>Market Entry Accelerator</h3><p>Compliance, regulatory navigation, and credible partnerships for investors and operators.</p><span class="seal" aria-hidden="true">ESG</span></div>
-        <div class="cred"><h3>Stakeholder Stabilization</h3><p>Community engagement, dispute mediation, and early warning frameworks.</p><span class="seal" aria-hidden="true">TRUST</span></div>
-        <div class="cred"><h3>Procurement & Logistics</h3><p>Facilitation and local execution aligned with ESG and local content goals.</p><span class="seal" aria-hidden="true">LC</span></div>
+        <div class="cred">
+          <details class="service-details">
+            <summary class="service-summary"><span class="service-copy"><span class="service-title">Market Entry Accelerator</span><span class="service-teaser">Compliance, regulatory navigation, and credible partnerships for investors and operators.</span><span class="service-action">How market entry works</span></span><span class="seal" aria-hidden="true">ESG</span></summary>
+            <div class="service-expanded">
+              <h4>How we approach market entry</h4>
+              <ol>
+                <li><strong>Understand the opportunity:</strong> define the target market, sector, operating model, commercial objectives, and material risks.</li>
+                <li><strong>Map requirements:</strong> identify relevant registration, licensing, procurement, ESG and local-content requirements with appropriately qualified advisers.</li>
+                <li><strong>Assess partners:</strong> identify prospective local delivery partners and assess capability, credibility, governance and conflicts of interest.</li>
+                <li><strong>Plan entry:</strong> prepare a staged market-entry roadmap with responsibilities, decision gates and measurable milestones.</li>
+              </ol>
+              <p><strong>Potential outputs:</strong> market-readiness assessment, compliance checklist, partner due-diligence framework and implementation roadmap, tailored to the engagement.</p>
+              <p>Regulatory permissions and contracts remain subject to the relevant authorities and counterparties; no outcome is guaranteed.</p>
+              <a class="service-contact" href="contact.html">Discuss market entry</a>
+            </div>
+          </details>
+        </div>
+        <div class="cred">
+          <details class="service-details">
+            <summary class="service-summary"><span class="service-copy"><span class="service-title">Stakeholder Stabilization</span><span class="service-teaser">Community engagement, dispute mediation, and early warning frameworks.</span><span class="service-action">How stakeholder engagement works</span></span><span class="seal" aria-hidden="true">TRUST</span></summary>
+            <div class="service-expanded">
+              <h4>How we approach stakeholder stability</h4>
+              <ol>
+                <li><strong>Identify stakeholders:</strong> map host communities, project teams, institutions and affected groups, including representatives who may be overlooked.</li>
+                <li><strong>Listen and assess:</strong> document concerns, expectations, existing commitments, and potential sources of conflict through appropriate consultation.</li>
+                <li><strong>Facilitate dialogue:</strong> establish transparent engagement and voluntary mediation processes, using independent specialists where required.</li>
+                <li><strong>Monitor commitments:</strong> agree a practical grievance-escalation and early-warning framework with clear owners and review points.</li>
+              </ol>
+              <p><strong>Potential outputs:</strong> stakeholder map, engagement plan, issues register, voluntary dialogue framework and follow-up dashboard.</p>
+              <p>Engagement must respect community rights and informed participation; Laconetti cannot guarantee dispute resolution or community consent.</p>
+              <a class="service-contact" href="contact.html">Discuss stakeholder support</a>
+            </div>
+          </details>
+        </div>
+        <div class="cred">
+          <details class="service-details">
+            <summary class="service-summary"><span class="service-copy"><span class="service-title">Procurement &amp; Logistics</span><span class="service-teaser">Facilitation and local execution aligned with ESG and local content goals.</span><span class="service-action">How procurement support works</span></span><span class="seal" aria-hidden="true">LC</span></summary>
+            <div class="service-expanded">
+              <h4>How we approach procurement and logistics</h4>
+              <ol>
+                <li><strong>Define the requirement:</strong> clarify technical scope, delivery locations, safety standards, timelines and budget assumptions.</li>
+                <li><strong>Verify capacity:</strong> evaluate available suppliers, equipment, technical partners and applicable qualifications before proposing delivery.</li>
+                <li><strong>Plan compliance:</strong> assess procurement integrity, local-content obligations, HSE requirements and logistics constraints.</li>
+                <li><strong>Coordinate execution:</strong> propose transparent responsibilities, milestones, reporting and performance checks for approved engagements.</li>
+              </ol>
+              <p><strong>Potential outputs:</strong> supplier qualification matrix, procurement support plan, logistics risk register and delivery-performance framework.</p>
+              <p>Contracts, equipment access, licences and specialist services depend on verified partner capacity and client approval; Laconetti does not claim capabilities it has not verified.</p>
+              <a class="service-contact" href="contact.html">Discuss procurement and logistics</a>
+            </div>
+          </details>
+        </div>
       </div>
     </section>
 
