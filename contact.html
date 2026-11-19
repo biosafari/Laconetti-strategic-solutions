@@ -1,67 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact – Laconetti</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Use Montserrat and Lato fonts consistent with the brand -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <header>
-      <div class="container nav-bar">
-        <div class="brand">Laconetti</div>
-        <nav>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="impact.html">Impact Stories</a></li>
-            <li><a href="team.html">Team</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </nav>
-        <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
-      </div>
-    </header>
-
-    <section class="container">
-      <h1 class="section-title">Get in Touch</h1>
-      <p>We’d love to hear from you. Whether you’re interested in our services, exploring partnership opportunities or just saying hello, feel free to reach out using the form below or contact one of our offices directly.</p>
-      <!-- Contact details for UK & Nigeria offices -->
-      <div class="card-grid" style="margin-bottom:2rem;">
-        <div class="card">
-          <h3>United Kingdom</h3>
-          <p><strong>London Office</strong><br />
-            12 International House, Canary Wharf, London, E14&nbsp;5AB<br />
-            Phone: +447572365025<br />
-            Email: <a href="mailto:info@laconetti.com">info@laconetti.com</a></p>
-        </div>
-        <div class="card">
-          <h3>Nigeria</h3>
-          <p><strong>Lagos Office</strong><br />
-            3 Marina Road, Victoria Island, Lagos, Nigeria<br />
-            Phone: +2348065552600<br />
-            Email: <a href="mailto:info@laconetti.com">info@laconetti.com</a></p>
-        </div>
-      </div>
-      <!-- Contact form -->
-      <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your message! We will get back to you soon.'); this.reset();">
-        <input type="text" name="name" placeholder="Your Name" required />
-        <input type="email" name="email" placeholder="Your Email" required />
-        <input type="text" name="subject" placeholder="Subject" />
-        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Contact Laconetti Strategic Solutions for strategic advisory, compliance, partnerships and market-entry enquiries.">
+  <link rel="canonical" href="https://laconetti.com/contact.html">
+  <title>Contact | Laconetti Strategic Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#0a2b4a;--navy-2:#082338;--gold:#daa520;--text:#fff;--muted:#d7e6f3}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;background:linear-gradient(165deg,var(--navy-2),var(--navy));color:var(--text);font:400 1rem/1.65 Lato,Arial,sans-serif}
+    h1,h2{font-family:Montserrat,Lato,sans-serif;line-height:1.2}
+    a{color:inherit}
+    a:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+    .container{width:min(1080px,calc(100% - 32px));margin:auto}
+    header{border-bottom:1px solid #ffffff30}
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:22px 0;flex-wrap:wrap}
+    .brand{font:700 1.12rem Montserrat,Lato,sans-serif;letter-spacing:.06em;text-decoration:none;display:flex;align-items:center;gap:12px}
+    .brand-mark{display:inline-block;width:25px;height:25px;border-left:3px solid var(--gold);border-bottom:3px solid var(--gold);transform:skew(-12deg)}
+    nav{display:flex;gap:24px;flex-wrap:wrap}
+    nav a{text-decoration:none;font-weight:700}
+    nav a:hover{color:var(--gold)}
+    main{padding:clamp(56px,9vw,112px) 0}
+    .eyebrow{font:700 .85rem Montserrat,Lato,sans-serif;color:var(--gold);text-transform:uppercase;letter-spacing:.12em}
+    h1{font-size:clamp(2rem,5vw,3.5rem);margin:14px 0 22px;max-width:17ch}
+    .intro{font-size:clamp(1.05rem,2.4vw,1.3rem);color:var(--muted);max-width:65ch}
+    .panel{margin:40px 0 0;max-width:760px;padding:clamp(24px,4vw,40px);background:#ffffff0b;border:1px solid #ffffff45;border-top:6px solid var(--gold);border-radius:18px}
+    .panel h2{margin:0 0 12px;font-size:1.25rem}
+    .panel p{margin:0 0 20px;color:var(--muted)}
+    .button{display:inline-block;max-width:100%;padding:13px 21px;border-radius:100px;background:var(--gold);color:#091c2e;text-decoration:none;font-weight:700;overflow-wrap:anywhere}
+    .button:hover{background:#efbc3c}
+    .secondary{display:inline-block;margin:16px 0 0 18px}
+    .note{margin-top:30px;font-size:.95rem;color:var(--muted)}
+    footer{border-top:1px solid #ffffff30;padding:26px 0 40px;color:#9fb2c3}
+    @media(max-width:540px){.nav{align-items:flex-start}.brand{font-size:1rem}nav{gap:18px}.secondary{margin:18px 0 0;display:block}.button{width:100%;text-align:center}main{padding:56px 0 80px}}
+  </style>
+</head>
+<body>
+  <header><div class="container nav">
+    <a class="brand" href="/" aria-label="Laconetti home"><span class="brand-mark" aria-hidden="true"></span>LACONETTI</a>
+    <nav aria-label="Primary"><a href="/">Home</a><a href="/#services">Services</a><a href="/#impact">Impact</a><a href="/team.html">Team</a><a href="/contact.html" aria-current="page">Contact</a></nav>
+  </div></header>
+  <main class="container">
+    <span class="eyebrow">Contact Laconetti</span>
+    <h1>Let's turn complexity into opportunity.</h1>
+    <p class="intro">Discuss strategic advisory, risk and compliance, business partnerships, or opportunities to strengthen delivery capacity. We welcome serious enquiries from prospective clients and technical partners.</p>
+    <section class="panel" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Start a conversation</h2>
+      <p>Email our team with your organisation, the support you need and a suitable way to reach you. Your email application will open so you can review the message before sending.</p>
+      <a class="button" href="mailto:info@laconetti.com?subject=Laconetti%20-%20Business%20enquiry">Email info@laconetti.com</a>
+      <a class="secondary" href="/">Return to homepage</a>
     </section>
-
-    <footer>
-      <p>© 2025 Laconetti. All rights reserved.</p>
-    </footer>
-
-    <script src="script.js"></script>
-  </body>
+    <p class="note">We do not request confidential documents or personal identification information through this page. Please agree on an appropriate secure channel before sharing sensitive material.</p>
+  </main>
+  <footer><div class="container"><small>&copy; <span id="year">2026</span> Laconetti. Sustainable Strategy, Global Impact.</small></div></footer>
+  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+</body>
 </html>

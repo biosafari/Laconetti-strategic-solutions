@@ -56,7 +56,8 @@
       footer{margin:2.5rem 0 2rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
       @media (max-width:960px){.hero-inner{grid-template-columns:1fr}.mosaic{grid-template-columns:1fr}.cred-grid,.wave-grid,.cards,.cta{grid-template-columns:1fr}}
 
-      @media (max-width:700px){.mosaic .tile{height:220px;min-height:220px}.mosaic .tile>img{height:100%;object-fit:cover}}\n      /* Until an approved mining photo is supplied, keep the tile without a broken image. */
+      @media (max-width:700px){.mosaic .tile{height:220px;min-height:220px}.mosaic .tile>img{height:100%;object-fit:cover}}
+      /* Until an approved mining photo is supplied, keep the tile without a broken image. */
       .mining-placeholder{min-height:190px;background:linear-gradient(135deg,#0a2b4a,#36536a 60%,#8a7138)}
       /* Mobile: keep content within the viewport and prevent horizontal scrolling. */
       html,body{max-width:100%;overflow-x:clip}
@@ -76,7 +77,7 @@
         .hero-badges{flex-wrap:wrap}
         .mosaic,.cards,.cred-grid,.wave-grid,.cta{min-width:0}
         .cta .bridge{justify-self:stretch}
-        footer{flex-wrap:wrap;gap:1rem}
+        footer{flex-direction:column;align-items:flex-start;gap:1rem;padding-bottom:5rem}
       }
       /* The legacy inline agent has no working input form; use the Tawk launcher. */
       #lac-chat{display:none!important}
@@ -92,12 +93,12 @@
           <li><a href="#services">Services</a></li>
           <li><a href="#impact">Impact</a></li>
           <li><a href="team.html">Team</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
       <div style="display:flex;gap:.5rem;align-items:center">
         <button id="themeToggle" aria-pressed="false" title="Switch to dark mode">🌙</button>
-        <a class="btn gold" href="#contact">Start a dialogue</a>
+        <a class="btn gold" href="contact.html">Start a dialogue</a>
       </div>
     </header>
 
@@ -195,7 +196,8 @@
     <!-- Mobile chat launcher: keeps the third-party chat closed until requested. -->
     <button id="lac-mobile-chat" type="button" aria-label="Open Laconetti chat" aria-expanded="false" style="display:none;position:fixed;right:16px;bottom:20px;z-index:99999;width:56px;height:56px;border:0;border-radius:50%;background:#0a2b4a;color:white;box-shadow:0 4px 18px #0005;font-size:25px;cursor:pointer;">&#128172;</button>
 
-    <!-- Image credits: Energy: Windfallengprojectsltd, CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:WINDFALL_ENGINEERING_AT_WORK_OFFSHORE_NIGERIA.jpg ; Agriculture: Kobo Medlyn, CC BY 4.0, https://commons.wikimedia.org/wiki/File:A_cassava_Farm.jpg -->\n    <!-- Hidden Netlify form for lead capture -->
+    <!-- Image credits: Energy: Windfallengprojectsltd, CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:WINDFALL_ENGINEERING_AT_WORK_OFFSHORE_NIGERIA.jpg ; Agriculture: Kobo Medlyn, CC BY 4.0, https://commons.wikimedia.org/wiki/File:A_cassava_Farm.jpg -->
+    <!-- Hidden Netlify form for lead capture -->
     <form name="lac-leads" data-netlify="true" netlify hidden>
       <input type="hidden" name="form-name" value="lac-leads">
       <input type="text" name="name">
